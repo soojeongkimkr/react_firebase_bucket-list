@@ -8,8 +8,11 @@ import NotFound from "./NotFound";
 import styled from "styled-components";
 import { Route, Switch } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { createBucket } from "./redux/modules/bucket";
+import { createBucket, loadBucketFB, addBucketFB } from "./redux/modules/bucket";
+
+
 import {db} from './firebase';
+import {collection, getDoc, getDocs, addDoc, updateDoc, doc, deleteDoc} from 'firebase/firestore'
 
 
 function App() {
@@ -19,14 +22,37 @@ function App() {
   const dispatch = useDispatch();
 
   React.useEffect(()=> {
-    console.log(db)
-  }, [])
+    // console.log(db);
+    
+    dispatch(loadBucketFB());
+
+    // // 삭제하기
+    // const docRef = doc(db, "bucket", "WFYGDGhGZY5nwWZvhOtj");
+    // deleteDoc(docRef)
+    
+    // // 수정하기
+    // const docRef = doc(db, "bucket", "WFYGDGhGZY5nwWZvhOtj");
+    // updateDoc(docRef, {completed: true});
+
+    // // 추가하기
+    // addDoc(collection(db, "bucket"), {text: "new", completed: false})
+
+    // //가져오기
+    // const query = await getDocs(collection(db, "bucket"));
+    // console.log(query);
+    // query.forEach((doc) => {
+    //   console.log(doc.id, doc.data());
+    // });
+  }, []);
 
   const addBucketList = () => { 
   // 스프레드 문법! 기억하고 계신가요? :) 
   // 원본 배열 list에 새로운 요소를 추가해주었습니다.
   // setList([...list, text.current.value]);
-     dispatch(createBucket({ text: text.current.value, complete:false}));
+
+    // dispatch(createBucket({ text: text.current.value, complete:false}));
+
+    dispatch(addBucketFB({ text: text.current.value, complete:false}))
   }
 return (
   <div className="App">
